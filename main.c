@@ -1,4 +1,10 @@
 #include <stdio.h>
+#include <unistd.h>
+
+#include <err.h>
+
+#define EXIT_FAILURE 1
+#define EXIT_SUCCESS 0
 
 void prompt() {
   printf("$ ");
@@ -14,16 +20,37 @@ int main(int argc, char *argv[]) {
   char line[1000];
   read_line(line, sizeof(line));
 
-  int c = 0;
-  while(line[c] != '\0') {
-    char chr = line[c];
-    if (chr == ' ') {
-      printf("\n");
-    } else {
-      printf("%c", chr);
-    }
-    c++;
+  pid_t pid = fork();
+
+  if (pid == -1) {
+    err(EXIT_FAILURE, "fork failed");
   }
 
-  return 0;
+  if (pid == 0) {
+    int c = 0;
+    while(line[c] != '\0') {
+      char chr = line[c];
+      if (chr == ' ') {
+        printf("\n");
+      } else {
+        printf("%c", chr);
+      }
+      c++;
+    }
+  } else {
+    int c = 0;
+    while(line[c] != '\0') {
+      char chr = line[c];
+      if (chr == ' ') {
+        printf("\n");
+      } else {
+        printf("%c", chr);
+      }
+      c++;
+    }
+  }
+
+
+
+  return EXIT_SUCCESS;
 }
