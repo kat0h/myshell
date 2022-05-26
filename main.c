@@ -1,7 +1,10 @@
 #include <stdio.h>
 #include <unistd.h>
 
+#include <sysexits.h>
 #include <err.h>
+
+#include "parser.h"
 
 #define EXIT_FAILURE 1
 #define EXIT_SUCCESS 0
@@ -10,8 +13,20 @@ void prompt() {
   printf("$ ");
 }
 
+void lntrim(char *str) {
+  int i = 0;
+  while(1) {
+    if(str[i] == '\n') {
+      str[i] = '\0';
+      break;
+    }
+    i++;
+  }
+}
+
 void read_line(char* line, int size) {
   fgets(line, size, stdin);
+  lntrim(line);
 }
 
 int main(int argc, char *argv[]) {
@@ -27,30 +42,10 @@ int main(int argc, char *argv[]) {
   }
 
   if (pid == 0) {
-    int c = 0;
-    while(line[c] != '\0') {
-      char chr = line[c];
-      if (chr == ' ') {
-        printf("\n");
-      } else {
-        printf("%c", chr);
-      }
-      c++;
-    }
+    // parent
+    return 0;
   } else {
-    int c = 0;
-    while(line[c] != '\0') {
-      char chr = line[c];
-      if (chr == ' ') {
-        printf("\n");
-      } else {
-        printf("%c", chr);
-      }
-      c++;
-    }
   }
-
-
 
   return EXIT_SUCCESS;
 }
