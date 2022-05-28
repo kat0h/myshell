@@ -34,6 +34,8 @@ int main(int argc, char *argv[]) {
 
   char line[1000];
   read_line(line, sizeof(line));
+  Args *args = Args_new();
+  Args_parse(args, line);
 
   pid_t pid = fork();
 
@@ -45,6 +47,11 @@ int main(int argc, char *argv[]) {
     // parent
     return 0;
   } else {
+    int e = execv(args->argv[0], args->argv);
+    if (e == -1) {
+      err(EXIT_FAILURE, "exec failed");
+    }
+    Args_free(args);
   }
 
   return EXIT_SUCCESS;

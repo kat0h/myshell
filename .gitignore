@@ -1,3 +1,4 @@
-./objects/*
+objects/*
 .DS_Store
 test.c
+main

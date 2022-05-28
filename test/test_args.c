@@ -15,6 +15,18 @@ void assert_equal(int want, int got) {
 
 void test_new_free() {
   Args *args = Args_new();
+
+  Args_parse(args, "test hello world");
+  printf("input: %s\n", "test hello world");
+  printf("argc: %d\n", args->argc);
+  printf("argv: [");
+  for (int i=0; i < args->argc; i++)
+    printf("\"%s\", ", args->argv[i]);
+  printf("]\n");
+
+  if (!(args->argv[args->argc] == NULL)) {
+    fail++;
+  }
   Args_free(args);
 }
 
