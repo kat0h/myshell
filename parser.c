@@ -19,7 +19,7 @@ void Args_free(Args *args) {
 int Args_parse(Args *args, char *line) {
   int c = 0;
   int sc = 1;
-  // TODO: if line is "                      " then clash
+  // TODO: "                      " returns wrong data
   // スペースをヌル文字に変える
 
   // count spaces

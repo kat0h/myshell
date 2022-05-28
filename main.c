@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <unistd.h>
-
+#include <strings.h>
 #include <sysexits.h>
+#include <sys/wait.h>
 #include <err.h>
 
 #include "parser.h"
@@ -13,45 +14,54 @@ void prompt() {
   printf("$ ");
 }
 
-void read_line(char* line, int size) {
-  fgets(line, size, stdin);
+int read_line(char* line, int size) {
+  char *result = fgets(line, size, stdin);
   line[strlen(line) - 1] = '\0';
+  if (result != NULL)
+    return 0;
+  else
+    return -1;
+}
+
+void run_ext_command(char *argv[]) {
+  int e = execvp(argv[0], argv);
+  if (e == -1) {
+    err(EXIT_FAILURE, "exec failed");
+  }
+}
+
+void wait_ext_command(pid_t pid) {
+  int wstatus;
+  if (waitpid(pid, &wstatus, 0) == -1) {
+    err(EXIT_FAILURE, "waitpid");
+  }
 }
 
 int main(int argc, char *argv[]) {
-  prompt();
+  while (1) {
+    prompt();
 
-  char line[1000];
-  read_line(line, sizeof(line));
-  Args *args = Args_new();
-  Args_parse(args, line);
+    char line[1000];
+    if (read_line(line, sizeof(line)) == -1) {
+      break;
+    };
+    Args *args = Args_new();
+    Args_parse(args, line);
 
-  pid_t pid = fork();
+    pid_t pid = fork();
 
-  if (pid == -1) {
-    err(EXIT_FAILURE, "fork failed");
-  }
-
-  if (pid == 0) {
-    // parent
-    return 0;
-  } else {
-    int e = execv(args->argv[0], args->argv);
-    if (e == -1) {
-      err(EXIT_FAILURE, "exec failed");
+    if (pid == -1) {
+      err(EXIT_FAILURE, "fork failed");
     }
-    Args_free(args);
+
+    if (pid == 0) {
+      run_ext_command(args->argv);
+      Args_free(args);
+    } else {
+      // parent
+      wait_ext_command(pid);
+    }
   }
 
   return EXIT_SUCCESS;
 }
-// 
-// void main_loop() {
-//   prompt
-// }
-// 
-// void main(int argc, char *argv[]) {
-//   while (1) {
-//     main_loop();
-//   }
-// }
