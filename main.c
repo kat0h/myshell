@@ -13,20 +13,9 @@ void prompt() {
   printf("$ ");
 }
 
-void lntrim(char *str) {
-  int i = 0;
-  while(1) {
-    if(str[i] == '\n') {
-      str[i] = '\0';
-      break;
-    }
-    i++;
-  }
-}
-
 void read_line(char* line, int size) {
   fgets(line, size, stdin);
-  lntrim(line);
+  line[strlen(line) - 1] = '\0';
 }
 
 int main(int argc, char *argv[]) {
@@ -56,3 +45,13 @@ int main(int argc, char *argv[]) {
 
   return EXIT_SUCCESS;
 }
+// 
+// void main_loop() {
+//   prompt
+// }
+// 
+// void main(int argc, char *argv[]) {
+//   while (1) {
+//     main_loop();
+//   }
+// }
