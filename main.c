@@ -37,30 +37,42 @@ void wait_ext_command(pid_t pid) {
   }
 }
 
+int main_loop() {
+  // show prompt
+  prompt();
+
+  // read  line
+  char line[1000];
+  if (read_line(line, sizeof(line)) == -1) {
+    return 0;
+  };
+
+  // parse arguments
+  Args *args = Args_new();
+  Args_parse(args, line);
+
+  // fork process
+  pid_t pid = fork();
+  if (pid == -1) {
+    err(EXIT_FAILURE, "fork failed");
+  }
+
+  // run command
+  if (pid == 0) {
+    run_ext_command(args->argv);
+    Args_free(args);
+  } else {
+    // parent
+    wait_ext_command(pid);
+  }
+
+  return 1;
+}
+
 int main(int argc, char *argv[]) {
-  while (1) {
-    prompt();
-
-    char line[1000];
-    if (read_line(line, sizeof(line)) == -1) {
-      break;
-    };
-    Args *args = Args_new();
-    Args_parse(args, line);
-
-    pid_t pid = fork();
-
-    if (pid == -1) {
-      err(EXIT_FAILURE, "fork failed");
-    }
-
-    if (pid == 0) {
-      run_ext_command(args->argv);
-      Args_free(args);
-    } else {
-      // parent
-      wait_ext_command(pid);
-    }
+  int status = 1;
+  while (status) {
+    status = main_loop();
   }
 
   return EXIT_SUCCESS;
