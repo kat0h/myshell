@@ -41,17 +41,10 @@ int Args_parse(Args *args, char *line) {
     token = yylex();
   }
   // set last pointer to NULL
-  args->argv = realloc(args->argv, sizeof(char *) * args->argc);
+  args->argv = realloc(args->argv, sizeof(char *) * (args->argc + 1));
   args->argv[args->argc] = NULL;
 
   yy_delete_buffer(buffer);
-
-  int i = 0;
-  while(args->argv[i] != NULL) {
-    printf("%s\n", args->argv[i]);
-    i++;
-  }
-  printf("NULL\n");
 
   return 0;
 }

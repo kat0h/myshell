@@ -51,7 +51,6 @@ int main_loop() {
   Args *args = Args_new();
   Args_parse(args, line);
 
-  return 1;
   // fork process
   pid_t pid = fork();
   if (pid == -1) {
