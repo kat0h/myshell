@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <strings.h>
 #include "parser.h"
 
@@ -16,46 +17,41 @@ void Args_free(Args *args) {
 
 };
 
+#define STR_LIT 1
+typedef struct yy_buffer_state * YY_BUFFER_STATE;
+extern int yylex();
+extern YY_BUFFER_STATE yy_scan_string(char *str);
+extern void yy_delete_buffer(YY_BUFFER_STATE buffer);
+extern char *yytext;
+
 int Args_parse(Args *args, char *line) {
-  int c = 0;
-  int sc = 1;
-  // TODO: "                      " returns wrong data
-  // スペースをヌル文字に変える
+  YY_BUFFER_STATE buffer = yy_scan_string(line);
 
-  // count spaces
-  while(line[c] != '\0') {
-    if (line[c] == ' ')
-      sc++;
-    c++;
+  int token = yylex();
+  while (token) {
+    switch (token) {
+      case STR_LIT:
+        args->argc++;
+        args->argv = realloc(args->argv, sizeof(char *) * args->argc);
+        char *ptr = malloc(sizeof(char) * (strlen(yytext) + 1));
+        strncpy(ptr, yytext, strlen(yytext));
+        ptr[strlen(yytext)] = '\0';
+        args->argv[args->argc-1] = ptr;
+    }
+    token = yylex();
   }
-  args->argc = sc;
-  // +2 is for NULL
-  args->argv = (char **) malloc((sc + 2) * sizeof(char *));
+  // set last pointer to NULL
+  args->argv = realloc(args->argv, sizeof(char *) * args->argc);
+  args->argv[args->argc] = NULL;
 
+  yy_delete_buffer(buffer);
 
   int i = 0;
-  c = 0;
-  for (i = 0; i < sc; i++) {
-    int wc = 0;
-    int start = c;
-    while(line[c] != ' ' && line[c] != '\0') {
-      wc++;
-      c++;
-    }
-    char *arg = (char *) malloc((wc+1) * sizeof(char));
-    strncpy(arg, &line[start], wc);
-    arg[wc] = '\0';
-
-    args->argv[i] = arg;
-
-    if (line[c] == '\0')
-      break;
-    else
-      c++;
-
+  while(args->argv[i] != NULL) {
+    printf("%s\n", args->argv[i]);
+    i++;
   }
-
-  args->argv[args->argc] = NULL;
+  printf("NULL\n");
 
   return 0;
 }
