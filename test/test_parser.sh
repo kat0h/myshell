@@ -20,9 +20,9 @@ echo "   parser"
 echo
 
 assert '"/bin/ls","."' '/bin/ls .'
-assert '"/bin/ls",""' '/bin/ls '
+assert '"/bin/ls"' '/bin/ls '
 assert '"/bin","/bin"' '/bin /bin'
-assert '""' ''
+assert '' ''
 
 echo
 echo OK

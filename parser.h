@@ -10,4 +10,8 @@ Args* Args_new();
 void Args_free(Args *args);
 int Args_parse(Args *args, char *line);
 
+typedef struct {
+  Args *args;
+} Commands;
+
 #endif
