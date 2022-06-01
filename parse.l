@@ -3,6 +3,7 @@
 #define STR_LIT 1
 extern void yy_input(char*, int*, int);
 #define yy_input(buf, count, max) yy_input(buf, &count, max)
+// TODO: "ls" "."を解釈できるようにする
 %}
 
 %start STR_LIT
@@ -20,7 +21,7 @@ extern void yy_input(char*, int*, int);
 <INITIAL>. ;
 
 <STR_LIT>[^\"]* {
-return STR_LIT;
+  return STR_LIT;
 }
 <STR_LIT>\" {
   BEGIN INITIAL;

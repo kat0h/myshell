@@ -2,3 +2,6 @@ objects/*
 .DS_Store
 test.c
 main
+a.out
+lex.yy.c
+tmp/*
