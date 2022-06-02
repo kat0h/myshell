@@ -4,13 +4,9 @@
 #include <stdlib.h>
 
 
-typedef struct {
-  char *s;
-} Str;
-
-Str *newStr();
-void setStr(Str *s, char *i);
-void addStr(Str *s, char *i);
-void freeStr(Str *str);
+char *newStr();
+void setStr(char *s, char *i);
+void addStr(char *s, char *i);
+void freeStr(char *str);
 
 #endif

@@ -1,5 +1,6 @@
 %{
 #include <stdio.h>
+#include "../str.h"
 
 #define STR_LIT 1
 #define PIPE 2
@@ -7,8 +8,7 @@
 extern void yy_input(char*, int*, int);
 #define yy_input(buf, count, max) yy_input(buf, &count, max)
 
-char *buffer      = NULL;
-int  buffer_size  = 0;
+char *yybuffer = NULL;
 %}
 
 %start STR_LIT
@@ -16,25 +16,15 @@ int  buffer_size  = 0;
 %%
 
 <INITIAL>[ \n\t];
-<INITIAL>\" {
-  BEGIN STR_LIT;
-}
 <INITIAL>\| {
   return PIPE;
 };
-
 <INITIAL>[^ \n\t]* {
+  setStr(yybuffer, yytext);
   return STR_LIT;
 };
 <INITIAL>. ;
 
-
-<STR_LIT>[^\"]* {
-  return STR_LIT;
-}
-<STR_LIT>\" {
-  BEGIN INITIAL;
-}
 
 %%
 

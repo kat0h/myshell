@@ -15,7 +15,7 @@ int Args_parse(Args *args, char *line);
 // $ "echo" hoge
 typedef struct {
   int type;
-  Str str;
+  char *str;
 } Arg;
 
 // $ Args2

@@ -3,11 +3,11 @@
 #include "../str.h"
 
 int main(void) {
-  Str *s = newStr();
+  char *s = newStr();
   setStr(s, "hage");
-  printf("data: %s\n", s->s);
+  printf("data: %s\n", s);
   addStr(s, " hoge");
-  printf("data: %s\n", s->s);
+  printf("data: %s\n", s);
   freeStr(s);
   return 0;
 }

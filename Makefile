@@ -1,4 +1,4 @@
-main: objects/parser.o objects/main.o objects/lex.yy.c
+main: objects/parser.o objects/main.o objects/lex.yy.c objects/str.o
 	$(CC) -o $@ $^
 
 test: objects/test_parser objects/test_str
@@ -20,7 +20,7 @@ objects/parser.o: parser.c
 	$(CC) -c $< -o $@
 
 # test
-objects/test_parser: objects/parser.o objects/test_parser.o objects/lex.yy.c
+objects/test_parser: objects/parser.o objects/test_parser.o objects/lex.yy.c objects/str.o
 	$(CC) -o $@ $^
 
 objects/test_str: objects/test_str.o objects/str.o
