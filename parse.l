@@ -11,7 +11,7 @@ extern void yy_input(char*, int*, int);
 char *yybuffer = NULL;
 %}
 
-%start STR_LIT
+%x STR_LIT
 
 %%
 
