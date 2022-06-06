@@ -1,5 +1,6 @@
 %{
 #include <stdio.h>
+#include "parse.h"
 #include "parse.tab.h"
 %}
 
@@ -13,7 +14,7 @@
   return SEMICOLON;
 }
 
-[^ \n]* {
+[^ \n\|;]* {
   yylval.arg = yytext;
   return ARG;
 }
