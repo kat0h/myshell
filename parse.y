@@ -11,19 +11,18 @@
 #include <stdlib.h>
 #include <strings.h>
 #include "parse.h"
+#include "str.h"
 extern int yylex(void);
 extern int yyerror(char const *str);
 %}
 %union {
   char *arg ;
-  ARGS *args;
   CMD  *cmd ;
   CMDS *cmds;
   LINE *line;
 }
 %token PIPE SEMICOLON CR <arg> ARG
 %type <arg>  arg
-%type <args> args
 %type <cmd>  cmd
 %type <cmds> cmds
 %type <line> line
@@ -44,7 +43,7 @@ l
       CMDS *c = l->cmds[i];
       printf(" {\n  ");
       for (int j=0; j<(c->size); j++) {
-        ARGS *a = c->cmd[j]->args;
+        CMD *a = c->cmd[j];
         // 一つのコマンド
         printf("{");
         for (int k=0; k<(a->argc); k++) {
@@ -97,16 +96,8 @@ cmds
   }
   ;
 cmd
-  : args {
-    CMD *ptr = malloc(sizeof(CMD));
-    ptr->args = $1;
-    $$ = ptr;
-  }
-  ;
-args
   : arg {
-    // ARGSを生成
-    ARGS *pa = malloc(sizeof(ARGS));
+    CMD *pa = malloc(sizeof(CMD));
     char **ps = malloc(sizeof(char *) * 2);
     ps[0] = $1;
     ps[1] = NULL;
@@ -114,7 +105,7 @@ args
     pa->argc = 1;
     $$ = pa;
   }
-  | args arg {
+  | cmd arg {
     $1->argc++;
     $1->argv = realloc($1->argv, sizeof(char *) * ($1->argc + 1));
     $1->argv[$1->argc-1] = $2;
@@ -124,7 +115,6 @@ args
   ;
 arg
   : ARG {
-    // 必ずポインタを解放する
     unsigned long len = strlen(yylval.arg);
     char *ptr = malloc(sizeof(char) * (len + 1));
     strncpy(ptr, yylval.arg, len);

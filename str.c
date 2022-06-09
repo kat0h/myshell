@@ -1,6 +1,4 @@
-/*
- * Utility library
- */
+// 2022 KotaKato
 
 #include <stdio.h>
 #include <stdlib.h>

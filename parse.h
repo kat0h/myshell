@@ -1,21 +1,16 @@
-/*
- * header file for parse.y and parse.l
- * this is just included in parse.y & parse.l
- */
+#ifndef PARSE_H
+#define PARSE_H
 
-// コマンド単体
-// char*の配列
-// 最後の要素はNULLになる
-// sizeはNULLを除いた要素の個数
+// 一つのコマンド (リダイレクトなどは此方)
+// argv: char*の配列 最後の要素はNULLになる
+// argc: 最後のNULLを除いたargvの要素数
 typedef struct {
   char **argv;
   int argc;
-} ARGS;
-
-// 一つのコマンド (リダイレクトなどは此方)
-typedef struct {
-  ARGS *args;
 } CMD;
+CMD *cmd_new();
+void cmd_push_arg(CMD *c, char *arg);
+void cmd_free(CMD *c);
 
 // 現状pipeで繋がれたコマンド
 // CMDの配列
@@ -30,3 +25,4 @@ typedef struct {
   int size;
 } LINE;
 
+#endif
