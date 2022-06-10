@@ -115,10 +115,8 @@ cmd
   ;
 arg
   : ARG {
-    unsigned long len = strlen(yylval.arg);
-    char *ptr = malloc(sizeof(char) * (len + 1));
-    strncpy(ptr, yylval.arg, len);
-    ptr[len] = '\0';
+    char *ptr = newStr();
+    setStr(ptr, yylval.arg);
     $$ = ptr;
   }
 %%
