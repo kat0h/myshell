@@ -78,7 +78,7 @@ void cmds_pp(CMDS *cmds) {
   INDENT();
   printf("size: %d\n", cmds->size);
   INDENT();
-  puts("cmds: {");
+  puts("cmd: {");
   DEBUG_INDENT++;
   for (int i=0; i<(cmds->size); i++) {
     cmd_pp(cmds->cmd[i]);
@@ -88,11 +88,50 @@ void cmds_pp(CMDS *cmds) {
   puts("}");
 }
 
+LINE *line_new() {
+  LINE *line = malloc(sizeof(LINE));
+  CMDS **c = malloc(sizeof(CMDS *));
+  line->cmds = c;
+  line->cmds[0] = NULL;
+  line->size = 0;
+  return line;
+}
+
+void line_push_cmds(LINE *line, CMDS *cmds) {
+  line->size++;
+  line->cmds = realloc(line->cmds, sizeof(CMDS *) * (cmds->size + 1));
+  line->cmds[line->size-1] = cmds;
+  line->cmds[line->size] = NULL;
+}
+
+void line_free(LINE *line) {
+  for (int i = 0; i < line->size; i++) {
+    cmds_free(line->cmds[i]);
+  }
+  free(line->cmds);
+  free(line);
+}
+
+void line_pp(LINE *line) {
+  INDENT();
+  printf("size: %d\n", line->size);
+  INDENT();
+  puts("cmds: {");
+  DEBUG_INDENT++;
+  for (int i=0; i<(line->size); i++) {
+    cmds_pp(line->cmds[i]);
+  }
+  DEBUG_INDENT--;
+  INDENT();
+  puts("}");
+}
+
 // -DPARSE_MAIN
 #ifdef PARSE_MAIN
 int main(void) {
-  CMD *cmd = cmd_new();
+  CMD  *cmd  = cmd_new();
   CMDS *cmds = cmds_new();
+  LINE *line = line_new();
 
   char *i = newStr();
   char *j = newStr();
@@ -101,10 +140,11 @@ int main(void) {
 
   cmd_push_arg(cmd, i);
   cmd_push_arg(cmd, j);
-
   cmds_push_cmd(cmds, cmd);
-  cmds_pp(cmds);
+  line_push_cmds(line, cmds);
 
-  cmds_free(cmds);
+  line_pp(line);
+
+  line_free(line);
 }
 #endif

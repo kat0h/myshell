@@ -29,5 +29,9 @@ typedef struct {
   CMDS **cmds;
   int size;
 } LINE;
+LINE *line_new();
+void line_push_cmds(LINE *line, CMDS *cmds);
+void line_free(LINE *line);
+void line_pp(LINE *line);
 
 #endif

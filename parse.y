@@ -61,19 +61,12 @@ l
   ;
 line
   : cmds {
-    LINE *ptr = malloc(sizeof(LINE));
-    CMDS **p  = malloc(sizeof(CMD *) * 2);
-    ptr->size = 1;
-    ptr->cmds = p;
-    ptr->cmds[0] = $1;
-    ptr->cmds[1] = NULL;
+    LINE *ptr = line_new();
+    line_push_cmds(ptr, $1);
     $$ = ptr;
   }
   | line SEMICOLON cmds {
-    $1->size++;
-    $1->cmds = realloc($1->cmds, sizeof(CMDS *) * ($1->size + 1));
-    $1->cmds[$1->size-1] = $3;
-    $1->cmds[$1->size] = NULL;
+    line_push_cmds($1, $3);
     $$ = $1;
   }
   ;
