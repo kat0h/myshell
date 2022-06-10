@@ -9,8 +9,9 @@ typedef struct {
   int argc;
 } CMD;
 CMD *cmd_new();
-void cmd_push_arg(CMD *c, char *arg);
-void cmd_free(CMD *c);
+void cmd_push_arg(CMD *cmd, char *arg);
+void cmd_free(CMD *cmd);
+void cmd_pp(CMD *cmd);
 
 // 現状pipeで繋がれたコマンド
 // CMDの配列
