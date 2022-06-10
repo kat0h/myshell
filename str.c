@@ -7,8 +7,7 @@
 #include "str.h"
 
 char *newStr() {
-  char *s = (char *) malloc(sizeof(char *));
-  s = (char *) malloc(1 * sizeof(char));
+  char *s = malloc(1 * sizeof(char));
 
   s[0] = '\0';
   return s;

@@ -19,6 +19,10 @@ typedef struct {
   CMD **cmd;
   int size;
 } CMDS;
+CMDS *cmds_new();
+void cmds_push_cmd(CMDS *cmds, CMD *cmd);
+void cmds_free(CMDS *cmds);
+void cmds_pp(CMDS *cmds);
 
 // 現状;で繋がれたコマンド
 typedef struct {

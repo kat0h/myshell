@@ -79,37 +79,23 @@ line
   ;
 cmds
   : cmd {
-    CMDS *cs = malloc(sizeof(CMDS));
-    CMD **c = malloc(sizeof(CMD *) * 2);
-    cs->size = 1;
-    cs->cmd = c;
-    cs->cmd[0] = $1;
-    cs->cmd[1] = NULL;
-    $$ = cs;
+    CMDS *ptr = cmds_new();
+    cmds_push_cmd(ptr, $1);
+    $$ = ptr;
   }
   | cmds PIPE cmd {
-    $1->size++;
-    $1->cmd = realloc($1->cmd, sizeof(CMD *) * ($1->size + 1));
-    $1->cmd[$1->size-1] = $3;
-    $1->cmd[$1->size] = NULL;
+    cmds_push_cmd($1, $3);
     $$ = $1;
   }
   ;
 cmd
   : arg {
-    CMD *pa = malloc(sizeof(CMD));
-    char **ps = malloc(sizeof(char *) * 2);
-    ps[0] = $1;
-    ps[1] = NULL;
-    pa->argv = ps;
-    pa->argc = 1;
-    $$ = pa;
+    CMD *ptr = cmd_new();
+    cmd_push_arg(ptr, $1);
+    $$ = ptr;
   }
   | cmd arg {
-    $1->argc++;
-    $1->argv = realloc($1->argv, sizeof(char *) * ($1->argc + 1));
-    $1->argv[$1->argc-1] = $2;
-    $1->argv[$1->argc] = NULL;
+    cmd_push_arg($1, $2);
     $$ = $1;
   }
   ;
