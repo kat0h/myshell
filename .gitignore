@@ -6,3 +6,4 @@ a.out
 lex.yy.c
 tmp/*
 myshell.tab.*
+tags

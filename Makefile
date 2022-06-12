@@ -1,5 +1,6 @@
 main: myshell.tab.c lex.yy.c str.c parse.c parser.c main.c
 	$(CC) -o $@ $^
+	ctags -R
 
 # parser
 lex.yy.c: myshell.l
