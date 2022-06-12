@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include "parse.h"
 
-int parse();
+int parse(LINE *line, char *input_line);
 
 // flex
 typedef struct yy_buffer_state * YY_BUFFER_STATE;
@@ -16,6 +16,5 @@ extern int yyparse(void);
 extern FILE *yyin;
 
 extern LINE *line_tree;
-
 
 #endif

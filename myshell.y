@@ -19,7 +19,7 @@ extern int yylex(void);
 extern int yyerror(char const *str);
 
 // parser.c
-LINE *line_tree;
+LINE *line_tree = NULL;
 
 %}
 %union {

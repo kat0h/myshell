@@ -7,17 +7,14 @@
 #include "parse.h"
 
 int parse(LINE *line, char *input_line) {
-  YY_BUFFER_STATE buffer = yy_scan_string("echo hoge | cat\n");
+  YY_BUFFER_STATE buffer = yy_scan_string(input_line);
 
-  line_tree = NULL;
   if (yyparse()) {
     fprintf(stderr, "Parser Error");
     exit(1);
   }
 
   line = line_tree;
-  line_pp(line);
-  line_pp(line_tree);
 
   yy_delete_buffer(buffer);
   return 0;
