@@ -10,10 +10,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <strings.h>
+
 #include "parse.h"
 #include "str.h"
+
+// flex
 extern int yylex(void);
 extern int yyerror(char const *str);
+
+// parser.c
+LINE *line_tree;
+
 %}
 %union {
   char *arg ;
@@ -28,36 +35,15 @@ extern int yyerror(char const *str);
 %type <line> line
 %%
 
-lines
-  : l
-  | lines l
-  ;
 l
   : line CR {
-    // preview nodes
-    LINE *l = $1;
-    // LINE
-    puts("{");
-    for (int i=0; i<(l->size); i++) {
-      // CMDS
-      CMDS *c = l->cmds[i];
-      printf(" {\n  ");
-      for (int j=0; j<(c->size); j++) {
-        CMD *a = c->cmd[j];
-        // 一つのコマンド
-        printf("{");
-        for (int k=0; k<(a->argc); k++) {
-          printf(" '%s'", a->argv[k]);
-        }
-        printf(" } ");
-        if (j+1<c->size)
-          printf("'|' ");
-      }
-      puts("\n }");
-    }
-    puts("}");
+    // ポインタはparser.cで解放されます
+    line_pp($1);
+    line_tree = $1;
   }
-  | CR
+  | CR {
+    line_tree = NULL;
+  }
   ;
 line
   : cmds {
@@ -102,17 +88,6 @@ arg
 
 int yyerror(char const *str) {
     extern char *yytext;
-    fprintf(stderr, "parser error near %s\n", yytext);
+    fprintf(stderr, "parser error\n");
     return 0;
-}
-
-int main(void) {
-    extern int yyparse(void);
-    extern FILE *yyin;
-
-    yyin = stdin;
-    if (yyparse()) {
-        fprintf(stderr, "Error ! Error ! Error !\n");
-        exit(1);
-    }
 }

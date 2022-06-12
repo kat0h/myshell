@@ -1,7 +1,7 @@
 %{
 #include <stdio.h>
 #include "parse.h"
-#include "parse.tab.h"
+#include "myshell.tab.h"
 %}
 
 %%
