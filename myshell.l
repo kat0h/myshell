@@ -6,15 +6,11 @@
 
 %%
 
-\| {
-  return PIPE;
-}
-
 ; {
   return SEMICOLON;
 }
 
-[^ \n\|;]* {
+[^ \n;]* {
   yylval.arg = yytext;
   return ARG;
 }
