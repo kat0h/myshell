@@ -1,6 +1,7 @@
-main: myshell.tab.c lex.yy.c str.c parse.c parser.c main.c
+main: myshell.tab.c lex.yy.c str.c parse.c parser.c main.c exec.c
 	$(CC) -o $@ $^
 	ctags -R
+	make clean
 
 # parser
 lex.yy.c: myshell.l

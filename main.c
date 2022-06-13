@@ -1,13 +1,10 @@
 #include <stdio.h>
 #include <string.h>
-#include <unistd.h>
 #include <strings.h>
-#include <sysexits.h>
-#include <sys/wait.h>
-#include <err.h>
 
 #include "parser.h"
 #include "parse.h"
+#include "exec.h"
 
 #define EXIT_FAILURE 1
 #define EXIT_SUCCESS 0
@@ -24,20 +21,6 @@ int read_line(char* line, int size) {
     return -1;
 }
 
-void run_ext_command(char *argv[]) {
-  int e = execvp(argv[0], argv);
-  if (e == -1) {
-    err(EXIT_FAILURE, "exec failed");
-  }
-}
-
-void wait_ext_command(pid_t pid) {
-  int wstatus;
-  if (waitpid(pid, &wstatus, 0) == -1) {
-    err(EXIT_FAILURE, "waitpid");
-  }
-}
-
 int main_loop() {
   // show prompt
   prompt();
@@ -50,9 +33,13 @@ int main_loop() {
   };
 
   LINE *l = NULL;
-  parse(l, line);
+  int i = 0;
+  parse(&l, line);
   if (l != NULL) {
-    line_pp(l);
+    // コマンドを実行：
+    exec_command(l);
+
+    // 入力で確保されたメモリーを解放する
     line_free(l);
   }
 

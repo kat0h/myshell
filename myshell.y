@@ -38,7 +38,6 @@ LINE *line_tree = NULL;
 l
   : line CR {
     // ポインタはparser.cで解放されます
-    line_pp($1);
     line_tree = $1;
   }
   | CR {
