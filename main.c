@@ -36,7 +36,7 @@ int main_loop() {
   int i = 0;
   parse(&l, line);
   if (l != NULL) {
-    // コマンドを実行：
+    // パーサーが作成した構造体からコマンドを実行：
     exec_command(l);
 
     // 入力で確保されたメモリーを解放する

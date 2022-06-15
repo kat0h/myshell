@@ -23,15 +23,18 @@ void wait_ext_command(pid_t pid) {
 }
 
 void exec_command(LINE *line) {
-  pid_t pid = fork();
-
-  // forkが失敗したときのエラー処理
-  if (pid == 0) {
-    // child
-    run_ext_command(line->cmds[0]->cmd[0]->argv);
-  } else {
-    // parent
-    wait_ext_command(pid);
+  // セミコロンで区切られたコマンドを実行
+  for (int i = 0; i < line->size; i++) {
+    pid_t pid = fork();
+    // forkが失敗したときのエラー処理
+    if (pid == 0) {
+      // child
+      // cmd[0]は固定
+      run_ext_command(line->cmds[i]->cmd[0]->argv);
+    } else {
+      // parent
+      wait_ext_command(pid);
+    }
   }
 }
 
