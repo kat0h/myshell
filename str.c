@@ -21,9 +21,16 @@ void setStr(char *s, char *i) {
 }
 
 void addStr(char *s, char *i) {
+  // メモリ領域の拡張
   int len = strlen(i);
   s = realloc(s, sizeof(char) * (strlen(s) + len));
-  strcat(s, i);
+  // コピー用領領域を確保
+  char* c = newStr();
+  setStr(c, i);
+  // コピー
+  strcat(s, c);
+  // コピー用領領域を解放
+  free(c);
 }
 
 void freeStr(char *s) {
