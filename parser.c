@@ -24,9 +24,17 @@ int parse(LINE **l, char *input_line) {
 // -DPARSER_MAIN
 #ifdef PARSER_MAIN
 int main() {
-  LINE *l;
-  parse(l, "echo unko\n");
-  line_pp(l);
+  char line[1000];
+  while(1) {
+    printf(">>> ");
+    fgets(line, 1000, stdin);
+    if (feof(stdin))
+      break;
+    LINE *l;
+    parse(&l, line);
+    line_pp(l);
+    line_free(l);
+  }
   return 0;
 }
 #endif

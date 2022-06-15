@@ -7,3 +7,4 @@ lex.yy.c
 tmp/*
 myshell.tab.*
 tags
+parser

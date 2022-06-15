@@ -3,6 +3,9 @@ main: myshell.tab.c lex.yy.c str.c parse.c parser.c main.c exec.c
 	ctags -R
 	make clean
 
+parser: myshell.tab.c lex.yy.c str.c parse.c parser.c exec.c
+	$(CC) -o $@ -DPARSER_MAIN $^
+
 # parser
 lex.yy.c: myshell.l
 	flex -t myshell.l > lex.yy.c
