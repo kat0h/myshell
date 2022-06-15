@@ -1,3 +1,7 @@
+/*
+ * parser.h 2022@kotakato
+ */
+
 #ifndef PARSER_H
 #define PARSER_H
 

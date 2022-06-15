@@ -1,3 +1,7 @@
+/*
+ * parse.c 2022@kotakato
+ */
+
 #include <stdlib.h>
 #include <stdio.h>
 #include "./parse.h"

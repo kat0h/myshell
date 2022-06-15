@@ -1,4 +1,8 @@
 /*
+ * myshell.y 2022@kotakato
+ */
+
+/*
   TODO:
     <args> ::= <arg> | <arg> <args>
     <cmd>  ::= <args>

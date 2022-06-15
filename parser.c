@@ -1,3 +1,7 @@
+/*
+ * parser.c 2022@kotakato
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

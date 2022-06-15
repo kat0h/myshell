@@ -1,4 +1,6 @@
-// 2022 KotaKato
+/*
+ * str.c 2022@kotakato
+ */
 
 #include <stdio.h>
 #include <stdlib.h>

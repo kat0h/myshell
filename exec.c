@@ -1,3 +1,7 @@
+/*
+ * ecec.c 2022@kotakato
+ */
+
 #include "exec.h"
 #include <stdio.h>
 #include <sysexits.h>

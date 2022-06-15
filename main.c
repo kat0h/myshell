@@ -1,3 +1,7 @@
+/*
+ * main.c 2022@kotakato
+ */
+
 #include <stdio.h>
 #include <string.h>
 #include <strings.h>

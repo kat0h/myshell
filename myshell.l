@@ -1,4 +1,8 @@
 %{
+/*
+ * myshell.l 2022@kotakato
+ */
+
 #include <stdio.h>
 #include "parse.h"
 #include "myshell.tab.h"
