@@ -99,7 +99,7 @@ LINE *line_new() {
 
 void line_push_cmds(LINE *line, CMDS *cmds) {
   line->size++;
-  line->cmds = realloc(line->cmds, sizeof(CMDS *) * (cmds->size + 1));
+  line->cmds = realloc(line->cmds, sizeof(CMDS *) * (line->size + 1));
   line->cmds[line->size-1] = cmds;
   line->cmds[line->size] = NULL;
 }
