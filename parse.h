@@ -11,20 +11,20 @@
 typedef struct {
   char **argv;
   int argc;
-} CMD;
-CMD *cmd_new();
-void cmd_push_arg(CMD *cmd, char *arg);
-void cmd_free(CMD *cmd);
-void cmd_pp(CMD *cmd);
+} SIMPLECMD;
+SIMPLECMD *simplecmd_new();
+void simplecmd_push_arg(SIMPLECMD *cmd, char *arg);
+void simplecmd_free(SIMPLECMD *cmd);
+void simplecmd_pp(SIMPLECMD *cmd);
 
 // 現状pipeで繋がれたコマンド
 // CMDの配列
 typedef struct {
-  CMD **cmd;
+  SIMPLECMD **cmd;
   int size;
 } CMDS;
 CMDS *cmds_new();
-void cmds_push_cmd(CMDS *cmds, CMD *cmd);
+void cmds_push_cmd(CMDS *cmds, SIMPLECMD *cmd);
 void cmds_free(CMDS *cmds);
 void cmds_pp(CMDS *cmds);
 

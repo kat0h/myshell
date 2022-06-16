@@ -2,14 +2,6 @@
  * myshell.y 2022@kotakato
  */
 
-/*
-  TODO:
-    <args> ::= <arg> | <arg> <args>
-    <cmd>  ::= <args>
-    <cmds> ::= <cmd> | <cmd> '|' <cmds>
-    <line> ::= <cmds> | <cmds> ';' <line>
-*/
-
 %{
 #include <stdio.h>
 #include <stdlib.h>
@@ -28,13 +20,13 @@ LINE *line_tree = NULL;
 %}
 %union {
   char *arg ;
-  CMD  *cmd ;
+  SIMPLECMD *simplecmd;
   CMDS *cmds;
   LINE *line;
 }
 %token PIPE SEMICOLON CR <arg> ARG
 %type <arg>  arg
-%type <cmd>  cmd
+%type <simplecmd>  simplecmd
 %type <cmds> cmds
 %type <line> line
 %%
@@ -60,24 +52,24 @@ line
   }
   ;
 cmds
-  : cmd {
+  : simplecmd {
     CMDS *ptr = cmds_new();
     cmds_push_cmd(ptr, $1);
     $$ = ptr;
   }
-  | cmds PIPE cmd {
+  | cmds PIPE simplecmd {
     cmds_push_cmd($1, $3);
     $$ = $1;
   }
   ;
-cmd
+simplecmd
   : arg {
-    CMD *ptr = cmd_new();
-    cmd_push_arg(ptr, $1);
+    SIMPLECMD *ptr = simplecmd_new();
+    simplecmd_push_arg(ptr, $1);
     $$ = ptr;
   }
-  | cmd arg {
-    cmd_push_arg($1, $2);
+  | simplecmd arg {
+    simplecmd_push_arg($1, $2);
     $$ = $1;
   }
   ;

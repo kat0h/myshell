@@ -10,8 +10,8 @@
 int DEBUG_INDENT = 0;
 #define INDENT() for(int indent=0;indent<DEBUG_INDENT;indent++)printf("  ")
 
-CMD *cmd_new() {
-  CMD *cmd = malloc(sizeof(CMD));
+SIMPLECMD *simplecmd_new() {
+  SIMPLECMD *cmd = malloc(sizeof(SIMPLECMD));
   char **argv = malloc(sizeof(char *));
   cmd->argv = argv;
   cmd->argv[0] = NULL;
@@ -19,18 +19,18 @@ CMD *cmd_new() {
   return cmd;
 }
 
-// cmd_push_arg()
+// simplecmd_push_arg()
 // cmd->argcをインクリメントし、cmd->argvに渡されたargのポインターをそのまま代入します。
-void cmd_push_arg(CMD *cmd, char *arg) {
+void simplecmd_push_arg(SIMPLECMD *cmd, char *arg) {
   cmd->argv = realloc(cmd->argv, sizeof(char *) * (cmd->argc + 2));
   cmd->argv[cmd->argc] = arg;
   cmd->argv[cmd->argc+1] = NULL;
   cmd->argc++;
 }
 
-// cmd_free()
+// simplecmd_free()
 // 渡されたcmdとargvの各要素を全て解放します
-void cmd_free(CMD *cmd) {
+void simplecmd_free(SIMPLECMD *cmd) {
   for (int i = 0; i < cmd->argc; i++) {
     free(cmd->argv[i]);
   }
@@ -38,9 +38,9 @@ void cmd_free(CMD *cmd) {
   free(cmd);
 }
 
-// cmd_pp()
+// simplecmd_pp()
 // cmdの内容を表示します. デバグ用
-void cmd_pp(CMD *cmd) {
+void simplecmd_pp(SIMPLECMD *cmd) {
   INDENT();
   printf("argc: %d\n", cmd->argc);
   INDENT();
@@ -55,7 +55,7 @@ void cmd_pp(CMD *cmd) {
 
 CMDS *cmds_new() {
   CMDS *cmds = malloc(sizeof(CMDS));
-  CMD **c = malloc(sizeof(CMD *));
+  SIMPLECMD **c = malloc(sizeof(SIMPLECMD *));
   cmds->cmd = c;
   // set initial value
   cmds->size = 0;
@@ -63,16 +63,16 @@ CMDS *cmds_new() {
   return cmds;
 }
 
-void cmds_push_cmd(CMDS *cmds, CMD *cmd) {
+void cmds_push_cmd(CMDS *cmds, SIMPLECMD *cmd) {
   cmds->size++;
-  cmds->cmd = realloc(cmds->cmd, sizeof(CMD *) * (cmds->size + 1));
+  cmds->cmd = realloc(cmds->cmd, sizeof(SIMPLECMD *) * (cmds->size + 1));
   cmds->cmd[cmds->size-1] = cmd;
   cmds->cmd[cmds->size] = NULL;
 }
 
 void cmds_free(CMDS *cmds) {
   for (int i = 0; i < cmds->size; i++) {
-    cmd_free(cmds->cmd[i]);
+    simplecmd_free(cmds->cmd[i]);
   }
   free(cmds->cmd);
   free(cmds);
@@ -85,7 +85,7 @@ void cmds_pp(CMDS *cmds) {
   puts("cmd: {");
   DEBUG_INDENT++;
   for (int i=0; i<(cmds->size); i++) {
-    cmd_pp(cmds->cmd[i]);
+    simplecmd_pp(cmds->cmd[i]);
   }
   DEBUG_INDENT--;
   INDENT();
@@ -133,7 +133,7 @@ void line_pp(LINE *line) {
 // -DPARSE_MAIN
 #ifdef PARSE_MAIN
 int main(void) {
-  CMD  *cmd  = cmd_new();
+  SIMPLECMD  *cmd  = cmd_new();
   CMDS *cmds = cmds_new();
   LINE *line = line_new();
 
