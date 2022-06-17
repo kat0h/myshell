@@ -36,8 +36,10 @@ int main() {
       break;
     LINE *l;
     parse(&l, line);
-    line_pp(l);
-    line_free(l);
+    if (l != NULL) {
+      line_pp(l);
+      line_free(l);
+    }
   }
   return 0;
 }
