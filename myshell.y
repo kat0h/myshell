@@ -76,7 +76,7 @@ simplecmd
 arg
   : ARG {
     char *ptr = newStr();
-    setStr(ptr, yylval.arg);
+    ptr = setStr(ptr, yylval.arg);
     // yylval.argを解放する
     free(yylval.arg);
     $$ = ptr;

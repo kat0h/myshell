@@ -8,7 +8,7 @@ main: myshell.tab.c lex.yy.c str.c parse.c parser.c main.c exec.c
 	make clean
 
 parser: myshell.tab.c lex.yy.c str.c parse.c parser.c exec.c
-	$(CC) -o $@ -DPARSER_MAIN $^
+	$(CC) -O0 -g -o $@ -DPARSER_MAIN $^
 
 # parser
 lex.yy.c: myshell.l

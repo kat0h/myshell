@@ -139,8 +139,8 @@ int main(void) {
 
   char *i = newStr();
   char *j = newStr();
-  setStr(i, "echo");
-  setStr(j, "test");
+  i = setStr(i, "echo");
+  j = setStr(j, "test");
 
   cmd_push_arg(cmd, i);
   cmd_push_arg(cmd, j);

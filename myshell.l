@@ -32,7 +32,7 @@ char *string_buffer = NULL;
 
 [^ \n;\"]* {
   char *arg = newStr();
-  setStr(arg, yytext);
+  arg = setStr(arg, yytext);
   yylval.arg = arg;
   return ARG;
 }
@@ -45,13 +45,13 @@ char *string_buffer = NULL;
 
 <STRING>\\\" {
   // エスケープされた二重引用符
-  addStr(string_buffer, "\"");
+  string_buffer = addStr(string_buffer, "\"");
 }
 
 <STRING>\" {
   // argはyacc側で解放されます
   char *arg = newStr();
-  setStr(arg, string_buffer);
+  arg = setStr(arg, string_buffer);
 
   // string_bufferを解放する
   free(string_buffer);
@@ -63,7 +63,7 @@ char *string_buffer = NULL;
 }
 
 <STRING>. {
-  addStr(string_buffer, yytext);
+  string_buffer = addStr(string_buffer, yytext);
 }
 
 %%

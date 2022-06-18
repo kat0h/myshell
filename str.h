@@ -9,8 +9,8 @@
 
 
 char *newStr();
-void setStr(char *s, char *i);
-void addStr(char *s, char *i);
-void freeStr(char *str);
+char *setStr(char *s, char *i);
+char *addStr(char *s, char *i);
+// void freeStr(char *str);
 
 #endif

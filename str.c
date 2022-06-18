@@ -9,32 +9,24 @@
 #include "str.h"
 
 char *newStr() {
-  char *s = malloc(1 * sizeof(char));
+  char *s = malloc(1024 * sizeof(char));
 
   s[0] = '\0';
   return s;
 }
 
-void setStr(char *s, char *i) {
+char *setStr(char *s, char *i) {
   int len = strlen(i);
-  s = realloc(s, sizeof(char) * (len + 1));
-  strncpy(s, i, len);
-  s[len] = '\0';
+  char *ptr = realloc(s, sizeof(char) * (len + 1));
+  strncpy(ptr, i, len);
+  ptr[len] = '\0';
+  return ptr;
 }
 
-void addStr(char *s, char *i) {
-  // メモリ領域の拡張
-  int len = strlen(i);
-  s = realloc(s, sizeof(char) * (strlen(s) + len));
-  // コピー用領領域を確保
-  char* c = newStr();
-  setStr(c, i);
-  // コピー
-  strcat(s, c);
-  // コピー用領領域を解放
-  free(c);
+char *addStr(char *s, char *i) {
+  char *ptr = realloc(s, sizeof(char) * (strlen(i) + strlen(s) + 1));
+  strcat(ptr, i);
+  ptr[strlen(i) + strlen(s)] = '\0';
+  return ptr;
 }
 
-void freeStr(char *s) {
-  free(s);
-}
